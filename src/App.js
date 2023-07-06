@@ -74,14 +74,15 @@ function App() {
   }
 
   const getData = async () => {
-    const snapshot = await getDocs(collection(db, "transactions"));
-    const expenses = snapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
+    onSnapshot(collection(db, "transactions"), (snapShot) => {
+      const expenses = snapShot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
 
-    dispatch({ type: "GET_EXPENSES", payload: { expenses } });
-    toast.success("Expenses retrived successfully.");
+      dispatch({ type: "GET_EXPENSES", payload: { expenses } });
+      toast.success("Expenses retrived successfully.");
+    });
   };
 
   useEffect(() => {
